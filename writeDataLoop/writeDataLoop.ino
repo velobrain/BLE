@@ -10,6 +10,7 @@
 
 #define REPORTING_PERIOD_MS     1000
 
+PulseOximeter pox;
 const int REED_PIN = 3; // Pin connected to reed switch
 const int LED_PIN = 13; // LED pin - active-high
 const float RADIUS = 0.3; // metres
@@ -23,7 +24,7 @@ float circumference = 2*PIE*RADIUS;
 float arcLength = circumference/numberOfMagnets;
 int numIntervals = 0;
 int numHeartBeats = 1;
-PulseOximeter pox;
+
 uint32_t tsLastReport = 0;
 
 Adafruit_BLE_UART BT = Adafruit_BLE_UART(ADAFRUITBLE_REQ, ADAFRUITBLE_RDY, ADAFRUITBLE_RST);
@@ -60,13 +61,11 @@ void setup(void) {
 }
 int x;
 void loop() {
-  pox.update();
-  if (millis() - tsLastReport > REPORTING_PERIOD_MS) {
-    Serial.println(pox.getHeartRate());
-    tsLastReport = millis();
-  }
+
   float distance = 0;
   for( uint32_t tStart = millis();  (millis()-tStart) < period;  ) {
+    pox.update();
+    
     int proximity = digitalRead(REED_PIN); // Read the state of the switch
     if (proximity == LOW) // If the pin reads low, the switch is closed.
     {
