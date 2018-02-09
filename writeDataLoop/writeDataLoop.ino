@@ -100,6 +100,8 @@ void loop() {
   Serial.println(revs*arcLength);
   Serial.print("Average speed: ");
   Serial.println((revs*arcLength)/(numIntervals*intervalLength));
+  Serial.print("number of heart beats: ");
+  Serial.println(numHeartBeats);
   float totalDistance = revs*arcLength; //the total distance so far
   BT.pollACI();
 //  String s = String(x);
